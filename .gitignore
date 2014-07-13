@@ -1,0 +1,12 @@
+*.pyc
+*.xdl
+*.pcf
+*.bit
+*.gold
+.AppleDouble
+.DS_Store
+_xmsgs
+*.swp
+*.swo
+*.swn
+*~
