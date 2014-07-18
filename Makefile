@@ -1,11 +1,15 @@
 MAGMA = ~hanrahan/git//magma
 DEVICE='xc3s250e'
 
-TESTS = And.xdl ExclusiveOr.xdl \
+TESTS = east.xdl west.xdl north.xdl south.xdl splitter.xdl \
+    ExclusiveOr.xdl \
 	Multiplexer.xdl \
     Demultiplexer.xdl \
     Decoder.xdl \
-    FullAdder.xdl
+    FullAdder.xdl \
+    DFF.xdl \
+    register.xdl \
+    counter.xdl \
 
 .PHONY: test gold clean
 
