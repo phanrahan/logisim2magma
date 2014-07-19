@@ -465,27 +465,21 @@ class TFF(FF):
         self.inst = self.type + "_%d_%d" % loc
         self.name = kwargs.get('label',self.inst)
 
-class RSFF(FF):
+class SRFF(FF):
     def __init__(self, loc, **kwargs):
         FF.__init__(self, loc, **kwargs)
-
-        CLK = self.getEdgeLoc('west', 2)
-        kwinputs['CLK'] = CLK
 
         S = self.getEdgeLoc('west', 1)
         R = self.getEdgeLoc('west', 3)
         self.inputs = [S, R]
 
-        self.type = "RSFF"
+        self.type = "SRFF"
         self.inst = self.type + "_%d_%d" % loc
         self.name = kwargs.get('label',self.inst)
 
 class JKFF(FF):
     def __init__(self, loc, **kwargs):
         FF.__init__(self, loc, **kwargs)
-
-        CLK = self.getEdgeLoc('west', 2)
-        kwinputs['CLK'] = CLK
 
         J = self.getEdgeLoc('west', 1)
         K = self.getEdgeLoc('west', 3)
@@ -562,6 +556,10 @@ class Memory(Component):
         self.datawidth = kwargs.get("dataWidth", 8)
 
         self.mem = kwargs.get('contents',0)
+        n = len(self.mem)
+        if n < (1 << self.addrwidth):
+            self.mem += ((1 << self.addrwidth) - n) * [0]
+            assert len(self.mem) == (1 << self.addrwidth)
 
         self.D = self.getEdgeLoc('east', 4)
         self.A = self.getEdgeLoc('west', 4)
@@ -670,7 +668,7 @@ for node in circ:
              key = a.getAttribute('name')
              if key == 'contents':
                  val = a.firstChild.data.split()
-                 val = map(int, val[3:])
+                 val = [int(v, 16) for v in val[3:]]
              else:
                  val = a.getAttribute('val')
                  if val.isdigit(): val = int(val)
@@ -700,26 +698,25 @@ for node in circ:
             elif n == 'NOT Gate':
                 c = Not(l, **d)
 
-            elif n == 'D Flip-Flop':
-                c = DFF(l, **d)
-            #T Flip-Flop
-            #J-K Flip-Flop
-            #S-R Flip-Flop
-
-
             elif n == 'Clock':
                 c = Clock(l, **d)
 
+            elif n == 'D Flip-Flop':
+                c = DFF(l, **d)
+            elif n == 'T Flip-Flop':
+                c = TFF(l, **d)
+            elif n == 'S-R Flip-Flop':
+                c = SRFF(l, **d)
+            elif n == 'J-K Flip-Flop':
+                c = JKFF(l, **d)
 
             elif n == 'Register':
                 c = Register(l, **d)
-
             elif n == 'Counter':
                 c = Counter(l, **d)
 
             elif n == 'ROM':
                 c = ROM(l, **d)
-
             elif n == 'RAM':
                 c = RAM(l, **d)
 

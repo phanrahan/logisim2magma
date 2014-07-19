@@ -9,7 +9,16 @@ TESTS = east.xdl west.xdl north.xdl south.xdl splitter.xdl \
     FullAdder.xdl \
     DFF.xdl \
     register.xdl \
-    counter.xdl \
+    counter.xdl 
+
+#
+#    ROM.xdl \
+#    GeneralReg.xdl \
+#    RSLatch.xdl \
+#    JKFromSR.xdl \
+#    SRFlipFlop.xdl \
+#    JFFlipFlop.xdl \
+#
 
 .PHONY: test gold clean
 
