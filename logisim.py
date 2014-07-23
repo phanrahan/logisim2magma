@@ -176,7 +176,7 @@ class Component:
     def __init__(self, x, y, w, h, **kwargs):
 
         # only need this for the edge function
-        self.origin = (x,y)
+        self.origin = (x, y)
         self.size = (w, h)
 
         # only need this for the orient function
@@ -433,7 +433,7 @@ class Xor(Gate):
 
 class XNor(Gate):
     def __init__(self, loc, ninputs=5, **kwargs):
-        Gate.__init__(self, ninputs, 1, loc, w=60, negated=True, **kwargs)
+        Gate.__init__(self, loc, ninputs, 1, w=60, negated=True, **kwargs)
 
         self.type = "XNor"
         self.inst = self.type + "_%d_%d" % loc
@@ -592,9 +592,12 @@ class Register(Box):
         self.width = kwargs.get('width', 8)
 
         Q = self.getEdgeLoc('east', 2)
-        D = self.getEdgeLoc('west',2)
 
-        self.CLK = self.getEdgeLoc('south', 1)
+        D = self.getEdgeLoc('west',2)
+        self.CLK = self.getEdgeLoc('west', 3)
+
+        self.CE = self.getEdgeLoc('south', 1)
+        # asynchronous reset`
         self.R = self.getEdgeLoc('south', 2)
 
         self.inputs.append(D)
@@ -648,7 +651,7 @@ class Memory(Component):
         self.D = self.getEdgeLoc('east', 4)
         self.A = self.getEdgeLoc('west', 4)
 
-        self.SEL = self.getEdgeLoc('south', 5)
+        self.CS = self.getEdgeLoc('south', 5)
 
     def getConstructor(self):
         mem = map(str, self.mem)
@@ -671,13 +674,15 @@ class RAM(Memory):
     def __init__(self, loc, **kwargs):
         Memory.__init__(self, loc, **kwargs)
 
-        self.inputs = [self.A]
+        self.DI = self.getEdgeLoc('west', 6)
+        self.inputs = [self.A, self.DI]
+
         self.outputs = [self.D]
 
+        self.WE = self.getEdgeLoc('south', 4)
         self.CLK = self.getEdgeLoc('south', 6)
-        self.WE = self.getEdgeLoc('south', 7)
-
-        self.R = self.getEdgeLoc('south', 8)
+        self.OE = self.getEdgeLoc('south', 7)
+        self.R = self.getEdgeLoc('south', 8) # asynchronous
 
         self.type = "RAMB"
         self.inst = self.type + "_%d_%d" % loc
@@ -828,6 +833,8 @@ for node in circ:
                 c = XNor(l, **d)
             elif n == 'NOT Gate':
                 c = Not(l, **d)
+            elif n == 'Buffer':
+                c = Buffer(l, **d)
 
             elif n == 'Multiplexer':
                 c = Mux(l, **d)

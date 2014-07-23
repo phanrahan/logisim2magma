@@ -1,23 +1,20 @@
 MAGMA = ~hanrahan/git//magma
 DEVICE='xc3s250e'
 
-TESTS = east.xdl west.xdl north.xdl south.xdl splitter.xdl \
-    nand.xdl \
-    ExclusiveOr.xdl \
+TESTS = logic.xdl \
+    XOR.xdl \
 	Multiplexer.xdl \
     Demultiplexer.xdl \
     Decoder.xdl \
     FullAdder.xdl \
-    RSLatchNOr.xdl RSLatchNAnd.xdl \
-    SRFlipFlop.xdl JKFlipFlop.xdl \
-    Add.xdl \
-    Sub.xdl \
-    DFF.xdl TFF.xdl SRFF.xdl JKFF.xdl \
-    GeneralReg.xdl \
-    ROM.xdl \
+    RS.xdl \
+    RSEnable.xdl \
+    DEnable.xdl \
+    DFF.xdl \
+    SRFF.xdl JKFF.xdl \
+    Reg3.xdl \
     Counter4.xdl \
-    register.xdl \
-    counter.xdl 
+    Ripple4.xdl
 
 .PHONY: test gold clean
 
