@@ -66,21 +66,27 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <a name="clabel" val=""/>
     <a name="clabelup" val="east"/>
     <a name="clabelfont" val="SansSerif plain 12"/>
-    <wire from="(170,60)" to="(190,60)"/>
-    <wire from="(170,80)" to="(190,80)"/>
-    <wire from="(230,60)" to="(250,60)"/>
-    <comp lib="0" loc="(170,80)" name="Pin">
+    <wire from="(320,160)" to="(370,160)"/>
+    <wire from="(300,180)" to="(300,210)"/>
+    <wire from="(240,170)" to="(290,170)"/>
+    <wire from="(240,150)" to="(290,150)"/>
+    <comp lib="0" loc="(240,170)" name="Pin">
       <a name="tristate" val="false"/>
     </comp>
-    <comp lib="0" loc="(250,60)" name="Pin">
+    <comp lib="0" loc="(240,150)" name="Pin">
+      <a name="tristate" val="false"/>
+    </comp>
+    <comp lib="2" loc="(320,160)" name="Multiplexer">
+      <a name="enable" val="false"/>
+    </comp>
+    <comp lib="0" loc="(370,160)" name="Pin">
       <a name="facing" val="west"/>
       <a name="output" val="true"/>
       <a name="labelloc" val="east"/>
     </comp>
-    <comp lib="0" loc="(170,60)" name="Clock">
-      <a name="labelloc" val="north"/>
-      <a name="labelfont" val="SansSerif bold 14"/>
+    <comp lib="0" loc="(300,210)" name="Pin">
+      <a name="facing" val="north"/>
+      <a name="tristate" val="false"/>
     </comp>
-    <comp lib="4" loc="(230,60)" name="D Flip-Flop"/>
   </circuit>
 </project>

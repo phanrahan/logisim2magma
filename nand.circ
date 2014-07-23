@@ -36,8 +36,8 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
   </options>
   <mappings>
     <tool lib="6" map="Button2" name="Menu Tool"/>
-    <tool lib="6" map="Button3" name="Menu Tool"/>
     <tool lib="6" map="Ctrl Button1" name="Menu Tool"/>
+    <tool lib="6" map="Button3" name="Menu Tool"/>
   </mappings>
   <toolbar>
     <tool lib="6" name="Poke Tool"/>
@@ -66,21 +66,20 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <a name="clabel" val=""/>
     <a name="clabelup" val="east"/>
     <a name="clabelfont" val="SansSerif plain 12"/>
-    <wire from="(170,60)" to="(190,60)"/>
-    <wire from="(170,80)" to="(190,80)"/>
-    <wire from="(230,60)" to="(250,60)"/>
-    <comp lib="0" loc="(170,80)" name="Pin">
+    <wire from="(110,130)" to="(190,130)"/>
+    <wire from="(110,90)" to="(190,90)"/>
+    <wire from="(250,110)" to="(330,110)"/>
+    <comp lib="0" loc="(110,90)" name="Pin">
       <a name="tristate" val="false"/>
     </comp>
-    <comp lib="0" loc="(250,60)" name="Pin">
+    <comp lib="0" loc="(330,110)" name="Pin">
       <a name="facing" val="west"/>
       <a name="output" val="true"/>
       <a name="labelloc" val="east"/>
     </comp>
-    <comp lib="0" loc="(170,60)" name="Clock">
-      <a name="labelloc" val="north"/>
-      <a name="labelfont" val="SansSerif bold 14"/>
+    <comp lib="1" loc="(250,110)" name="NAND Gate"/>
+    <comp lib="0" loc="(110,130)" name="Pin">
+      <a name="tristate" val="false"/>
     </comp>
-    <comp lib="4" loc="(230,60)" name="D Flip-Flop"/>
   </circuit>
 </project>

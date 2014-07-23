@@ -18,7 +18,13 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
   <lib desc="#Gates" name="1"/>
   <lib desc="#Plexers" name="2"/>
   <lib desc="#Arithmetic" name="3"/>
-  <lib desc="#Memory" name="4"/>
+  <lib desc="#Memory" name="4">
+    <tool name="ROM">
+      <a name="contents">addr/data: 8 8
+0
+</a>
+    </tool>
+  </lib>
   <lib desc="#I/O" name="5"/>
   <lib desc="#Base" name="6">
     <tool name="Text Tool">
@@ -66,21 +72,29 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <a name="clabel" val=""/>
     <a name="clabelup" val="east"/>
     <a name="clabelfont" val="SansSerif plain 12"/>
-    <wire from="(170,60)" to="(190,60)"/>
-    <wire from="(170,80)" to="(190,80)"/>
-    <wire from="(230,60)" to="(250,60)"/>
-    <comp lib="0" loc="(170,80)" name="Pin">
+    <wire from="(180,120)" to="(180,140)"/>
+    <wire from="(180,160)" to="(260,160)"/>
+    <wire from="(170,120)" to="(180,120)"/>
+    <wire from="(180,160)" to="(180,180)"/>
+    <wire from="(170,150)" to="(260,150)"/>
+    <wire from="(300,140)" to="(390,140)"/>
+    <wire from="(180,140)" to="(260,140)"/>
+    <wire from="(170,180)" to="(180,180)"/>
+    <comp lib="4" loc="(300,140)" name="S-R Flip-Flop"/>
+    <comp lib="0" loc="(170,180)" name="Pin">
       <a name="tristate" val="false"/>
     </comp>
-    <comp lib="0" loc="(250,60)" name="Pin">
+    <comp lib="0" loc="(390,140)" name="Pin">
       <a name="facing" val="west"/>
       <a name="output" val="true"/>
       <a name="labelloc" val="east"/>
     </comp>
-    <comp lib="0" loc="(170,60)" name="Clock">
+    <comp lib="0" loc="(170,120)" name="Pin">
+      <a name="tristate" val="false"/>
+    </comp>
+    <comp lib="0" loc="(170,150)" name="Clock">
       <a name="labelloc" val="north"/>
       <a name="labelfont" val="SansSerif bold 14"/>
     </comp>
-    <comp lib="4" loc="(230,60)" name="D Flip-Flop"/>
   </circuit>
 </project>

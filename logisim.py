@@ -31,7 +31,6 @@ class Net:
         #print 'net: adding input', input
         self.inputs.append(input)
 
-
 class Circuit:
     def __init__(self):
         self.nets = []
@@ -95,8 +94,9 @@ class Circuit:
 
     def prune(self):
         for c in self.components:
-            c.inputs = [i for i in c.inputs if i in self.ports]
-            c.outputs = [i for i in c.outputs if i in self.ports]
+            if isinstance(c, Gate):
+                c.inputs = [i for i in c.inputs if i in self.ports]
+            #c.outputs = [i for i in c.outputs if i in self.ports]
 
             if hasattr(c, 'CE'):
                 c.CE = c.CE if self.connected(c.CE) else None
@@ -115,7 +115,7 @@ class Circuit:
 
         for c in self.outputs:
             i = c.inputs[0]
-            self.ports[o].addInput((c,i))
+            self.ports[i].addInput((c,i))
 
         for c in self.components:
              for o in c.outputs:
@@ -129,8 +129,9 @@ class Circuit:
         for c in self.components:
             if isinstance(c, Memory) or isinstance(c, FF):
                 for oport in c.outputs:
-                    n = self.ports[oport]
-                    n.visited = True
+                    if oport in self.ports:
+                        n = self.ports[oport]
+                        n.visited = True
 
         stack = [i for i in self.inputs]
         path = []
@@ -155,14 +156,21 @@ class Circuit:
         return path
 
     def getOutput(self, port):
-        ocomp, oport = self.ports[port].outputs[0]
+        net = self.ports[port]
+        ocomp, oport = net.outputs[0]
         if isinstance(ocomp, Splitter) and len(ocomp.inputs) == 1:
             i = ocomp.outputs.index(oport)
             iport = ocomp.inputs[0]
-            icomp, iport = self.ports[iport].outputs[0]
+            net = self.ports[iport]
+            #print net.inputs, net.outputs
+            icomp, iport = net.outputs[0]
             return str(icomp) + ('[%d]' % i)
         else:
-            return str(ocomp)
+            if len(ocomp.outputs) == 1:
+                return str(ocomp)
+            else:
+                o = ocomp.outputs.index(oport)
+                return str(ocomp) + '[%d]' % o
    
 class Component:
     def __init__(self, x, y, w, h, **kwargs):
@@ -247,6 +255,28 @@ class Component:
 
         # kwinputs
         # kwoutputs
+
+class Power(Component):
+    def __init__(self, loc, **kwargs):
+        x, y = loc
+        Component.__init__(self, x, y-10, w=20, h=20, **kwargs)
+
+        self.outputs.append(loc)
+
+        self.type = 'Power'
+        self.inst = "1"
+        self.name = kwargs.get('label',self.inst)
+
+class Ground(Component):
+    def __init__(self, loc, **kwargs):
+        x, y = loc
+        Component.__init__(self, x, y-10, w=20, h=20, **kwargs)
+
+        self.outputs.append(loc)
+
+        self.type = 'Ground'
+        self.inst = "0"
+        self.name = kwargs.get('label',self.inst)
 
 class In(Component):
     def __init__(self, loc, **kwargs):
@@ -419,11 +449,59 @@ class Buffer(Gate):
 
 class Not(Gate):
     def __init__(self, loc, **kwargs):
-        Gate.__init__(self, loc, 1, 1, w=20, h=20, **kwargs)
+        Gate.__init__(self, loc, 1, 1, w=20, h=20, negated=True, **kwargs)
 
         self.type = "Not"
         self.inst = self.type + "_%d_%d" % loc
         self.name = kwargs.get('label',self.inst)
+
+class Plexer(Component):
+    def __init__(self, loc, **kwargs):
+        self.select = kwargs.get("select", 1)
+        self.width = 1 << self.select
+
+        if self.select == 1:
+            w = 30
+            h = 40
+        else:
+            w = 40
+            h = (self.width + 2) * 10
+
+        x = loc[0] - w
+        y = loc[1] - h/2
+
+        Component.__init__(self, x, y, w, h, **kwargs)
+
+        if self.select == 1:
+            I0 = self.getEdgeLoc('west', 1)
+            I1 = self.getEdgeLoc('west', 3)
+            S = self.getEdgeLoc('south', 1)
+
+            self.inputs = [I0, I1, S]
+
+        else:
+            I = self.width * [0]
+            for i in range(self.width):
+                 I[i] = self.getEdgeLoc('west', i+1)
+            self.S = self.getEdgeLoc('south', 2)
+
+            self.inputs = I + [S]
+
+        self.OE = self.getEdgeLoc('south', 3)
+
+        self.outputs = [loc]
+
+class Mux(Plexer):
+    def __init__(self, loc, **kwargs):
+        Plexer.__init__(self, loc, **kwargs)
+
+        self.type = "Mux"
+        self.inst = self.type + "_%d_%d" % loc
+        self.name = kwargs.get('label',self.inst)
+
+    def getConstructor(self):
+        args = '(%d)' % self.width
+        return self.type + args
 
 
 class FF(Component):
@@ -432,11 +510,11 @@ class FF(Component):
         y = loc[1] - 10
         Component.__init__(self, x, y, w, h, **kwargs)
 
-        Q = self.getEdgeLoc('east', 1)
-        Qp = self.getEdgeLoc('east', 3)
-        self.outputs = [Q]
+        self.Q = self.getEdgeLoc('east', 1)
+        self.Qp = self.getEdgeLoc('east', 3)
 
-        CLK = self.getEdgeLoc('west', 1)
+        CLK = self.getEdgeLoc('west', 2)
+
         CE = self.getEdgeLoc('south', 2)
         R = self.getEdgeLoc('sorth', 1)
         S = self.getEdgeLoc('south', 3)
@@ -449,6 +527,7 @@ class DFF(FF):
 
         D = self.getEdgeLoc('west', 3)
         self.inputs = [D]
+        self.outputs = [self.Q]
 
         self.type = "FF"
         self.inst = self.type + "_%d_%d" % loc
@@ -460,6 +539,7 @@ class TFF(FF):
 
         T = self.getEdgeLoc('west', 3)
         self.inputs = [T]
+        self.outputs = [self.Q]
 
         self.type = "TFF"
         self.inst = self.type + "_%d_%d" % loc
@@ -472,6 +552,8 @@ class SRFF(FF):
         S = self.getEdgeLoc('west', 1)
         R = self.getEdgeLoc('west', 3)
         self.inputs = [S, R]
+        self.outputs = [self.Q]
+        #self.outputs = [self.Q, self.Qp]
 
         self.type = "SRFF"
         self.inst = self.type + "_%d_%d" % loc
@@ -484,6 +566,8 @@ class JKFF(FF):
         J = self.getEdgeLoc('west', 1)
         K = self.getEdgeLoc('west', 3)
         self.inputs = [J, K]
+        self.outputs = [self.Q]
+        #self.outputs = [self.Q, self.Qp]
 
         self.type = "JKFF"
         self.inst = self.type + "_%d_%d" % loc
@@ -599,6 +683,46 @@ class RAM(Memory):
         self.inst = self.type + "_%d_%d" % loc
         self.name = kwargs.get('label',self.inst)
 
+class Arith(Component):
+    def __init__(self, loc, w=40, h=40, **kwargs):
+        x = loc[0] - w
+        y = loc[1] - h/2
+        Component.__init__(self, x, y, w, h, **kwargs)
+
+        self.width = kwargs.get("width", 8)
+
+        A = self.getEdgeLoc('west', 1)
+        B = self.getEdgeLoc('west', 3)
+
+        C = self.getEdgeLoc('east', 2)
+
+        self.CIN = self.getEdgeLoc('south', 2)
+        self.COUT = self.getEdgeLoc('north', 2)
+
+        self.inputs = [A, B]
+        self.outputs = [C]
+
+    def getConstructor(self):
+        args = '(%d)' % self.width
+        return self.type + args
+
+class Add(Arith):
+    def __init__(self, loc, **kwargs):
+        Arith.__init__(self, loc, **kwargs)
+
+        self.type = "Add"
+        self.inst = self.type + "_%d_%d" % loc
+        self.name = kwargs.get('label',self.inst)
+
+class Sub(Arith):
+    def __init__(self, loc, **kwargs):
+        Arith.__init__(self, loc, **kwargs)
+
+        self.type = "Sub"
+        self.inst = self.type + "_%d_%d" % loc
+        self.name = kwargs.get('label',self.inst)
+
+
 
 class Splitter(Component):
     def __init__(self, loc, **kwargs):
@@ -682,7 +806,14 @@ for node in circ:
             else:
                 c = In(l, **d)
                 circuit.addInput(c)
+        elif n == 'Power':
+            c = Power(l, **d)
+            circuit.addInput(c)
+        elif n == 'Ground':
+            c = Ground(l, **d)
+            circuit.addInput(c)
         else:
+
             if n == 'AND Gate':
                 c = And(l, **d)
             elif n == 'NAND Gate':
@@ -697,6 +828,14 @@ for node in circ:
                 c = XNor(l, **d)
             elif n == 'NOT Gate':
                 c = Not(l, **d)
+
+            elif n == 'Multiplexer':
+                c = Mux(l, **d)
+
+            elif n == 'Adder':
+                c = Add(l, **d)
+            elif n == 'Subtractor':
+                c = Sub(l, **d)
 
             elif n == 'Clock':
                 c = Clock(l, **d)
@@ -738,25 +877,29 @@ circuit.wire()
 
 ins = []
 for c in circuit.inputs:
-    ins.append(c.name)
+    if isinstance(c, In):
+        ins.append(c.name)
 
 ins.sort()
 for c in circuit.inputs:
-    n = ins.index(c.name)
-    name = 'SWITCH[%d]' % n
-    print "# Mapping %s to %s" % (c.name, name)
-    c.name = name
+    if isinstance(c, In):
+        n = ins.index(c.name)
+        name = 'SWITCH[%d]' % n
+        print "# Mapping %s to %s" % (c.name, name)
+        c.name = name
 
 outs = []
 for c in circuit.outputs:
-    outs.append(c.name)
+    if isinstance(c, Out):
+        outs.append(c.name)
 
 outs.sort()
 for c in circuit.outputs:
-    n = outs.index(c.name)
-    name = 'LED[%d]' % n
-    print "# Mapping %s to %s" % (c.name, name)
-    c.name = name
+    if isinstance(c, Out):
+        n = outs.index(c.name)
+        name = 'LED[%d]' % n
+        print "# Mapping %s to %s" % (c.name, name)
+        c.name = name
 
 
 def setinput(c, port):

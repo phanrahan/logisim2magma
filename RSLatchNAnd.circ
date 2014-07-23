@@ -23,7 +23,7 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
   <lib desc="#Base" name="6">
     <tool name="Text Tool">
       <a name="text" val=""/>
-      <a name="font" val="SansSerif plain 12"/>
+      <a name="font" val="SansSerif bold 20"/>
       <a name="halign" val="center"/>
       <a name="valign" val="base"/>
     </tool>
@@ -44,18 +44,21 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <tool lib="6" name="Edit Tool"/>
     <tool lib="6" name="Text Tool">
       <a name="text" val=""/>
-      <a name="font" val="SansSerif plain 12"/>
+      <a name="font" val="SansSerif bold 20"/>
       <a name="halign" val="center"/>
       <a name="valign" val="base"/>
     </tool>
     <sep/>
     <tool lib="0" name="Pin">
       <a name="tristate" val="false"/>
+      <a name="labelfont" val="SansSerif bold 14"/>
     </tool>
     <tool lib="0" name="Pin">
       <a name="facing" val="west"/>
       <a name="output" val="true"/>
+      <a name="tristate" val="false"/>
       <a name="labelloc" val="east"/>
+      <a name="labelfont" val="SansSerif bold 14"/>
     </tool>
     <tool lib="1" name="NOT Gate"/>
     <tool lib="1" name="AND Gate"/>
@@ -66,21 +69,55 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <a name="clabel" val=""/>
     <a name="clabelup" val="east"/>
     <a name="clabelfont" val="SansSerif plain 12"/>
-    <wire from="(170,60)" to="(190,60)"/>
-    <wire from="(170,80)" to="(190,80)"/>
-    <wire from="(230,60)" to="(250,60)"/>
-    <comp lib="0" loc="(170,80)" name="Pin">
+    <wire from="(420,220)" to="(420,280)"/>
+    <wire from="(380,140)" to="(420,140)"/>
+    <wire from="(300,220)" to="(420,220)"/>
+    <wire from="(280,190)" to="(420,190)"/>
+    <wire from="(300,160)" to="(300,220)"/>
+    <wire from="(120,300)" to="(320,300)"/>
+    <wire from="(300,160)" to="(320,160)"/>
+    <wire from="(420,280)" to="(520,280)"/>
+    <wire from="(120,120)" to="(320,120)"/>
+    <wire from="(380,280)" to="(420,280)"/>
+    <wire from="(280,260)" to="(320,260)"/>
+    <wire from="(420,140)" to="(420,190)"/>
+    <wire from="(280,190)" to="(280,260)"/>
+    <wire from="(420,140)" to="(520,140)"/>
+    <comp lib="6" loc="(346,51)" name="Text">
+      <a name="text" val="RS Latch"/>
+      <a name="font" val="SansSerif bold 20"/>
+    </comp>
+    <comp lib="0" loc="(120,300)" name="Pin">
       <a name="tristate" val="false"/>
-    </comp>
-    <comp lib="0" loc="(250,60)" name="Pin">
-      <a name="facing" val="west"/>
-      <a name="output" val="true"/>
-      <a name="labelloc" val="east"/>
-    </comp>
-    <comp lib="0" loc="(170,60)" name="Clock">
-      <a name="labelloc" val="north"/>
+      <a name="label" val="R"/>
       <a name="labelfont" val="SansSerif bold 14"/>
     </comp>
-    <comp lib="4" loc="(230,60)" name="D Flip-Flop"/>
+    <comp lib="0" loc="(520,280)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="tristate" val="false"/>
+      <a name="label" val="Q'"/>
+      <a name="labelloc" val="east"/>
+      <a name="labelfont" val="SansSerif bold 14"/>
+    </comp>
+    <comp lib="1" loc="(380,280)" name="NAND Gate">
+      <a name="inputs" val="2"/>
+    </comp>
+    <comp lib="0" loc="(520,140)" name="Pin">
+      <a name="facing" val="west"/>
+      <a name="output" val="true"/>
+      <a name="tristate" val="false"/>
+      <a name="label" val="Q"/>
+      <a name="labelloc" val="east"/>
+      <a name="labelfont" val="SansSerif bold 14"/>
+    </comp>
+    <comp lib="0" loc="(120,120)" name="Pin">
+      <a name="tristate" val="false"/>
+      <a name="label" val="S"/>
+      <a name="labelfont" val="SansSerif bold 14"/>
+    </comp>
+    <comp lib="1" loc="(380,140)" name="NAND Gate">
+      <a name="inputs" val="2"/>
+    </comp>
   </circuit>
 </project>
