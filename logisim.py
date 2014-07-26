@@ -92,22 +92,6 @@ class Circuit:
     def connected(self, port):
         return port in self.ports
 
-    def prune(self):
-        for c in self.components:
-            if isinstance(c, Gate):
-                c.inputs = [i for i in c.inputs if i in self.ports]
-            #c.outputs = [i for i in c.outputs if i in self.ports]
-
-            if hasattr(c, 'CE'):
-                c.CE = c.CE if self.connected(c.CE) else None
-            if hasattr(c, 'R'):
-                c.R = c.R if self.connected(c.R) else None
-            if hasattr(c, 'S'):
-                c.S = c.S if self.connected(c.S) else None
-
-        #self.inputs = [i for i in c.inputs if i in self.ports]
-        #self.outputs = [i for i in c.outputs if i in self.ports]
-
     def wire(self):
         for c in self.inputs:
             o = c.outputs[0]
@@ -119,10 +103,10 @@ class Circuit:
 
         for c in self.components:
              for o in c.outputs:
-                 if o in self.ports:
+                 if self.connected(o):
                      self.ports[o].addOutput((c,o))
              for i in c.inputs:
-                 if i in self.ports:
+                 if self.connected(i):
                      self.ports[i].addInput((c,i))
 
     def tsort(self):
@@ -193,7 +177,7 @@ class Component:
     def __repr__(self):
         return self.name
 
-    def getConstructor(self):
+    def getConstructor(self, circuit):
         return self.type + '()'
 
     def getEdgeLoc(self, edge, i):
@@ -321,6 +305,11 @@ class Gate(Component):
         if size:
            w = h = size
 
+        negate = ninputs * [0]
+        for i in range(ninputs):
+            negate[i] = kwargs.get('negate' + str(i), negate[i] )
+        self.negate = negate
+
         self.negated = negated
         if self.negated:
             w += 10
@@ -334,7 +323,7 @@ class Gate(Component):
             self.outputs.append(loc)
 
         for i in range(ninputs):
-            iloc = self.getInputLoc(i, ninputs, loc, self.facing, w)
+            iloc = self.getInputLoc(i, negate[i], ninputs, loc, self.facing, w)
             self.inputs.append(iloc)
 
         self.orient(loc)
@@ -343,11 +332,40 @@ class Gate(Component):
         #print self.inputs
         #print self.outputs
 
-    def getConstructor(self):
-        args = '()' if len(self.inputs) < 2 else '(%d)' % len(self.inputs)
-        return self.type + args
+    def getNumInputs(self, circuit):
+        n = 0
+        for port in self.inputs:
+             if circuit.connected(port):
+                 n += 1
+        return n
+       
+    def getConstructor(self, circuit, op=None):
+        vars = 'ABCDEF'
 
-    def getInputLoc(self, index, ninputs, loc, facing, size):
+        args = []
+        n = 0
+
+        negatedinput = False
+        for i in range(len(self.inputs)):
+            if circuit.connected(self.inputs[i]):
+                arg = vars[n]
+                if self.negate[n]:
+                    arg = '~' + arg
+                    negatedinput = True
+                args.append(arg)
+                n += 1
+
+        if negatedinput:
+            expr = op.join(args)
+            if self.negated:
+                expr = '~(' + expr + ')'
+            name = 'LUT%d("' + expr + '")'
+            return name % n
+        else:
+            args = '()' if n < 2 else '(%d)' % n
+            return self.type + args
+
+    def getInputLoc(self, index, negate, ninputs, loc, facing, size):
 
         if ninputs % 2 == 0: ninputs += 1
 
@@ -380,6 +398,8 @@ class Gate(Component):
         x, y = loc
 
         dx = -size
+        if negate:
+           dx -= 10
 
         if ninputs & 1 == 1: 
             dy = skipStart * (ninputs - 1) + skipDist * index
@@ -399,6 +419,9 @@ class And(Gate):
         self.inst = self.type + "_%d_%d" % loc
         self.name = kwargs.get('label',self.inst)
 
+    def getConstructor(self, circuit):
+        return Gate.getConstructor(self, circuit, '&' )
+
 class NAnd(Gate):
     def __init__(self, loc, ninputs=5, **kwargs):
         Gate.__init__(self, loc, ninputs, 1, negated=True, **kwargs)
@@ -406,6 +429,9 @@ class NAnd(Gate):
         self.type = "NAnd"
         self.inst = self.type + "_%d_%d" % loc
         self.name = kwargs.get('label',self.inst)
+
+    def getConstructor(self, circuit):
+        return Gate.getConstructor(self, circuit, '&' )
 
 class Or(Gate):
     def __init__(self, loc, ninputs=5, **kwargs):
@@ -415,6 +441,10 @@ class Or(Gate):
         self.inst = self.type + "_%d_%d" % loc
         self.name = kwargs.get('label',self.inst)
 
+    def getConstructor(self, circuit):
+        return Gate.getConstructor(self, circuit, '|' )
+
+
 class Nor(Gate):
     def __init__(self, loc, ninputs=5, **kwargs):
         Gate.__init__(self, loc, ninputs, 1, negated=True, **kwargs)
@@ -422,6 +452,10 @@ class Nor(Gate):
         self.type = "NOr"
         self.inst = self.type + "_%d_%d" % loc
         self.name = kwargs.get('label',self.inst)
+
+    def getConstructor(self, circuit):
+        return Gate.getConstructor(self, circuit, '|' )
+
 
 class Xor(Gate):
     def __init__(self, loc, ninputs=5, **kwargs):
@@ -431,6 +465,10 @@ class Xor(Gate):
         self.inst = self.type + "_%d_%d" % loc
         self.name = kwargs.get('label',self.inst)
 
+    def getConstructor(self, circuit):
+        return Gate.getConstructor(self, circuit, '^' )
+
+
 class XNor(Gate):
     def __init__(self, loc, ninputs=5, **kwargs):
         Gate.__init__(self, loc, ninputs, 1, w=60, negated=True, **kwargs)
@@ -438,6 +476,10 @@ class XNor(Gate):
         self.type = "XNor"
         self.inst = self.type + "_%d_%d" % loc
         self.name = kwargs.get('label',self.inst)
+
+    def getConstructor(self, circuit):
+        return Gate.getConstructor(self, circuit, '^' )
+
 
 class Buffer(Gate):
     def __init__(self, loc, **kwargs):
@@ -499,7 +541,7 @@ class Mux(Plexer):
         self.inst = self.type + "_%d_%d" % loc
         self.name = kwargs.get('label',self.inst)
 
-    def getConstructor(self):
+    def getConstructor(self, circuit):
         args = '(%d)' % self.width
         return self.type + args
 
@@ -581,7 +623,7 @@ class Box(Component):
         y = loc[1] - 20
         Component.__init__(self, x, y, w, h, **kwargs)
 
-    def getConstructor(self):
+    def getConstructor(self, circuit):
         args = '(%d)' % self.width
         return self.type + args
 
@@ -653,7 +695,7 @@ class Memory(Component):
 
         self.CS = self.getEdgeLoc('south', 5)
 
-    def getConstructor(self):
+    def getConstructor(self, circuit):
         mem = map(str, self.mem)
         mem = '[' + ",".join(mem) + ']'
         args = '(%s, %d)' % (mem, self.datawidth)
@@ -707,7 +749,7 @@ class Arith(Component):
         self.inputs = [A, B]
         self.outputs = [C]
 
-    def getConstructor(self):
+    def getConstructor(self, circuit):
         args = '(%d)' % self.width
         return self.type + args
 
@@ -879,7 +921,6 @@ for node in circ:
                 circuit.addComponent(c)
 
 
-circuit.prune()
 circuit.wire()
 
 ins = []
@@ -968,18 +1009,18 @@ print
 for c in circuit.components:
     if isinstance(c, Clock):
         continue
-    print c, '=', c.getConstructor()
+    print c, '=', c.getConstructor(circuit)
 
 def getArgs(c):
-    i = [circuit.getOutput(port) for port in c.inputs]
+    i = [circuit.getOutput(port) for port in c.inputs if circuit.connected(port)]
 
     args = ','.join(i)
 
-    if hasattr(c, 'CE') and c.CE:
+    if hasattr(c, 'CE') and circuit.connected(c.CE):
         args += ', ce=%s' % circuit.getOutput( c.CE )
-    if hasattr(c, 'R') and c.R:
+    if hasattr(c, 'R') and circuit.connected(c.R):
         args += ', r=%s' % circuit.getOutput( c.R )
-    if hasattr(c, 'S') and c.S:
+    if hasattr(c, 'S') and circuit.connected(c.S):
         args += ', s=%s' % circuit.getOutput( c.S )
 
     return args

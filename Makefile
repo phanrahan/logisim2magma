@@ -1,7 +1,7 @@
 MAGMA = ~hanrahan/git//magma
 DEVICE='xc3s250e'
 
-TESTS = logic.xdl \
+TESTS = gates.xdl \
     XOR.xdl \
 	Multiplexer.xdl \
     Demultiplexer.xdl \
@@ -14,7 +14,8 @@ TESTS = logic.xdl \
     SRFF.xdl JKFF.xdl \
     Reg3.xdl \
     Counter4.xdl \
-    Ripple4.xdl
+    Ripple4.xdl \
+    updown.xdl
 
 .PHONY: test gold clean
 
