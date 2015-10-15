@@ -1,0 +1,177 @@
+{
+    ".deps_version": 2, 
+    "python build/Counter4.py": {
+        "build/Counter4.py": "input-eafecaa1e9104b83b2b13fd069ec8891", 
+        "build/Counter4.ucf": "output-3bf2592e5d026957b98af05e0dfda0af", 
+        "build/Counter4.v": "output-452c1f063aea745883503db8550c2cec"
+    }, 
+    "python build/DEnable.py": {
+        "build/DEnable.py": "input-52d9921815c472635bbd9958ed5c9749", 
+        "build/DEnable.ucf": "output-5826e11368e21f0b0666e73f24518b4b", 
+        "build/DEnable.v": "output-062c046be0535f8aa1e47a74ec257eb0"
+    }, 
+    "python build/DFF.py": {
+        "bake": "input-4bbaabb0ea916fea70b7942c3c421204", 
+        "build/DFF.py": "input-1a8058374fdb2bbaa99d13c683697cf4", 
+        "build/DFF.ucf": "output-5826e11368e21f0b0666e73f24518b4b", 
+        "build/DFF.v": "output-f61f022b210403d981986fa5e7f2aec0"
+    }, 
+    "python build/Decoder.py": {
+        "build/Decoder.py": "input-0a0bbd4c93cb66fcbcc824936107b5dc", 
+        "build/Decoder.ucf": "output-3bf2592e5d026957b98af05e0dfda0af", 
+        "build/Decoder.v": "output-44ff69b14eadd55d89949f6e82cb8f9c"
+    }, 
+    "python build/Demultiplexer.py": {
+        "build/Demultiplexer.py": "input-eb7b78ec760309b6e3fdb5186e64d324", 
+        "build/Demultiplexer.ucf": "output-30503b06937285d93dd63562021b5e8b", 
+        "build/Demultiplexer.v": "output-6385ec1ff0b6e5f8f25a821fcacb0f70"
+    }, 
+    "python build/FullAdder.py": {
+        "bake": "input-4bbaabb0ea916fea70b7942c3c421204", 
+        "build/Demultiplexer.v": "input-6385ec1ff0b6e5f8f25a821fcacb0f70", 
+        "build/FullAdder.py": "input-c5a8aa78922d5501d2a4bcb02fb8f00d", 
+        "build/FullAdder.ucf": "output-66c420e7b0ab36b66f391d0d451e79de", 
+        "build/FullAdder.v": "output-0c44c8aaaa6f4aa2d31494626fa6e2c8"
+    }, 
+    "python build/JKFF.py": {
+        "bake": "input-4bbaabb0ea916fea70b7942c3c421204", 
+        "build/JKFF.py": "input-04f1ae54e1c24d6d807b3fb8292474e1", 
+        "build/JKFF.ucf": "output-66c420e7b0ab36b66f391d0d451e79de", 
+        "build/JKFF.v": "output-5a2d2545011c2d3d9b04ee3110740807"
+    }, 
+    "python build/Multiplexer.py": {
+        "bake": "input-4bbaabb0ea916fea70b7942c3c421204", 
+        "build/Multiplexer.py": "input-7a12205e11d0d19f80984c7c457a98b2", 
+        "build/Multiplexer.ucf": "output-dd144f4667ea500c0678d4a3191c3d08", 
+        "build/Multiplexer.v": "output-e0c7b9a1e704123793df650d11b811c7"
+    }, 
+    "python build/RS.py": {
+        "build/RS.py": "input-c474a4af8f8d08c3fb0896963dbe7a47", 
+        "build/RS.ucf": "output-5826e11368e21f0b0666e73f24518b4b", 
+        "build/RS.v": "output-07949dc2e08c96e7f235f66a3f4c2ba7"
+    }, 
+    "python build/RSEnable.py": {
+        "build/RSEnable.py": "input-5895a8f232b4078025cd541387de875e", 
+        "build/RSEnable.ucf": "output-66c420e7b0ab36b66f391d0d451e79de", 
+        "build/RSEnable.v": "output-e34f10a68f99213bce6e3e3495e9c353"
+    }, 
+    "python build/Reg3.py": {
+        "build/Reg3.py": "input-65e468500e2bc39d1567fa175bb043d8", 
+        "build/Reg3.ucf": "output-ce8332b6b97bf14b52bd79011d0279c4", 
+        "build/Reg3.v": "output-30403d3db0897b503cf7ec0a0fd00a7b"
+    }, 
+    "python build/Ripple4.py": {
+        "build/Ripple4.py": "input-e012e288e41abe5205e8bab831a46dc8", 
+        "build/Ripple4.ucf": "output-87678436a6cdf69480f1b5835f65d812", 
+        "build/Ripple4.v": "output-1fed9f02d6c4a5e183b0bb2ed27ae4ce"
+    }, 
+    "python build/SRFF.py": {
+        "build/SRFF.py": "input-498fae2156fed6f768cda90aa73c734e", 
+        "build/SRFF.ucf": "output-66c420e7b0ab36b66f391d0d451e79de", 
+        "build/SRFF.v": "output-e985168f5426c34bdf4366aa627e402f"
+    }, 
+    "python build/XOR.py": {
+        "build/XOR.py": "input-54f842566a3822d1423c521d7e273cd5", 
+        "build/XOR.ucf": "output-5dee0c667609d9b9be75570fdc2cd612", 
+        "build/XOR.v": "output-481ac493f78f4d5bba68e33882139f1f"
+    }, 
+    "python build/gates.py": {
+        "bake": "input-4bbaabb0ea916fea70b7942c3c421204", 
+        "build/DFF.v": "input-f61f022b210403d981986fa5e7f2aec0", 
+        "build/Demultiplexer.ucf": "input-30503b06937285d93dd63562021b5e8b", 
+        "build/gates.py": "input-de1a34eae680e8aaa677e626fe1a405e", 
+        "build/gates.ucf": "output-07f22aa385bd6193c4fdfb1cefba9e56", 
+        "build/gates.v": "output-3aad5d6de518aa269a1845807d0f944b"
+    }, 
+    "python build/updown.py": {
+        "build/updown.py": "input-60df2c605587aa9dab6f96915c832859", 
+        "build/updown.ucf": "output-3bf2592e5d026957b98af05e0dfda0af", 
+        "build/updown.v": "output-738bdcc57f78bb61497cf995ea45004d"
+    }, 
+    "python logi.py Counter4.circ build/Counter4.py": {
+        "Counter4.circ": "input-cec4738cd7f39587f8d88cd8e0933b8d", 
+        "build/Counter4.py": "output-eafecaa1e9104b83b2b13fd069ec8891", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py DEnable.circ build/DEnable.py": {
+        "DEnable.circ": "input-22648f49d82d76633a82a2740d7430ea", 
+        "build/DEnable.py": "output-52d9921815c472635bbd9958ed5c9749", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py DFF.circ build/DFF.py": {
+        "DFF.circ": "input-bf1ab38e44814984a6940e6ebf941197", 
+        "build/DFF.py": "output-1a8058374fdb2bbaa99d13c683697cf4", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py Decoder.circ build/Decoder.py": {
+        "Decoder.circ": "input-b6991d17b75fb0f60676e9a54f402e7f", 
+        "build/Decoder.py": "output-0a0bbd4c93cb66fcbcc824936107b5dc", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py Demultiplexer.circ build/Demultiplexer.py": {
+        "Demultiplexer.circ": "input-0ae0c13292bf802ee0b20f1bc481b50a", 
+        "build/Demultiplexer.py": "output-eb7b78ec760309b6e3fdb5186e64d324", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py FullAdder.circ build/FullAdder.py": {
+        "FullAdder.circ": "input-0fb1d53ae874a1b4630c497f7a674f42", 
+        "bake": "input-4bbaabb0ea916fea70b7942c3c421204", 
+        "build/DEnable.ucf": "input-5826e11368e21f0b0666e73f24518b4b", 
+        "build/FullAdder.py": "output-c5a8aa78922d5501d2a4bcb02fb8f00d", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py JKFF.circ build/JKFF.py": {
+        "JKFF.circ": "input-3163bcadff4f8ca43b4239945332f691", 
+        "build/FullAdder.ucf": "input-66c420e7b0ab36b66f391d0d451e79de", 
+        "build/JKFF.py": "output-04f1ae54e1c24d6d807b3fb8292474e1", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py Multiplexer.circ build/Multiplexer.py": {
+        "Multiplexer.circ": "input-844aa2b1e8159acd8cc48713e99a7935", 
+        "build/Multiplexer.py": "output-7a12205e11d0d19f80984c7c457a98b2", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py RS.circ build/RS.py": {
+        "RS.circ": "input-974a9ccad413aafe40eaf25de8501621", 
+        "build/RS.py": "output-c474a4af8f8d08c3fb0896963dbe7a47", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py RSEnable.circ build/RSEnable.py": {
+        "RSEnable.circ": "input-02754506b8277a211ce1196837fe9382", 
+        "build/RSEnable.py": "output-5895a8f232b4078025cd541387de875e", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py Reg3.circ build/Reg3.py": {
+        "Reg3.circ": "input-99fe2ae71777508344b9160f6b04c68a", 
+        "bake": "input-4bbaabb0ea916fea70b7942c3c421204", 
+        "build/Counter4.py": "input-eafecaa1e9104b83b2b13fd069ec8891", 
+        "build/Reg3.py": "output-65e468500e2bc39d1567fa175bb043d8", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py Ripple4.circ build/Ripple4.py": {
+        "Ripple4.circ": "input-3fc967fff5af653534c5191dd2d9dba2", 
+        "build/Ripple4.py": "output-e012e288e41abe5205e8bab831a46dc8", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py SRFF.circ build/SRFF.py": {
+        "SRFF.circ": "input-2fb4bb276bfb012984188fd0517d78c8", 
+        "build/SRFF.py": "output-498fae2156fed6f768cda90aa73c734e", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py XOR.circ build/XOR.py": {
+        "XOR.circ": "input-5e39cfba37c4e439c9366ccf35500a66", 
+        "build/XOR.py": "output-54f842566a3822d1423c521d7e273cd5", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py gates.circ build/gates.py": {
+        "bake": "input-4bbaabb0ea916fea70b7942c3c421204", 
+        "build/gates.py": "output-de1a34eae680e8aaa677e626fe1a405e", 
+        "gates.circ": "input-dcfa8e51c679f2706c269e4cd5a3fdb8", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9"
+    }, 
+    "python logi.py updown.circ build/updown.py": {
+        "build/updown.py": "output-60df2c605587aa9dab6f96915c832859", 
+        "logi.py": "input-93d8403a0353c0d6121c323eecbe85b9", 
+        "updown.circ": "input-83a8877bbad3d075b5618cf30febaba6"
+    }
+}
