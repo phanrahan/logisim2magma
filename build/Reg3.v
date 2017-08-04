@@ -1,0 +1,34 @@
+module main (input [0:4] SWITCH, output [0:2] LED);
+wire inst0_O;
+wire inst1_O;
+wire inst2_O;
+wire inst3_O;
+wire inst4_O;
+wire inst5_O;
+wire inst6_Q;
+wire inst7_O;
+wire inst8_Q;
+wire inst9_O;
+wire inst10_Q;
+wire inst11_O;
+wire inst12_O;
+wire inst13_O;
+wire inst14_O;
+LUT2 #(.INIT(4'h8)) inst0 (.I0(SWITCH[3]), .I1(SWITCH[4]), .O(inst0_O));
+LUT2 #(.INIT(4'h8)) inst1 (.I0(SWITCH[2]), .I1(SWITCH[4]), .O(inst1_O));
+LUT2 #(.INIT(4'h8)) inst2 (.I0(inst11_O), .I1(SWITCH[4]), .O(inst2_O));
+LUT2 #(.INIT(4'hE)) inst3 (.I0(inst14_O), .I1(SWITCH[0]), .O(inst3_O));
+LUT2 #(.INIT(4'hE)) inst4 (.I0(inst7_O), .I1(SWITCH[0]), .O(inst4_O));
+LUT2 #(.INIT(4'hE)) inst5 (.I0(inst2_O), .I1(SWITCH[0]), .O(inst5_O));
+FDRSE #(.INIT(1'b0)) inst6 (.CE(1'b1), .R(inst3_O), .S(inst13_O), .Q(inst6_Q));
+LUT2 #(.INIT(4'h8)) inst7 (.I0(inst9_O), .I1(SWITCH[4]), .O(inst7_O));
+FDRSE #(.INIT(1'b0)) inst8 (.CE(1'b1), .R(inst4_O), .S(inst0_O), .Q(inst8_Q));
+LUT1 #(.INIT(2'h1)) inst9 (.I0(SWITCH[3]), .O(inst9_O));
+FDRSE #(.INIT(1'b0)) inst10 (.CE(1'b1), .R(inst5_O), .S(inst1_O), .Q(inst10_Q));
+LUT1 #(.INIT(2'h1)) inst11 (.I0(SWITCH[2]), .O(inst11_O));
+LUT1 #(.INIT(2'h1)) inst12 (.I0(SWITCH[1]), .O(inst12_O));
+LUT2 #(.INIT(4'h8)) inst13 (.I0(SWITCH[1]), .I1(SWITCH[4]), .O(inst13_O));
+LUT2 #(.INIT(4'h8)) inst14 (.I0(inst12_O), .I1(SWITCH[4]), .O(inst14_O));
+assign LED = {inst6_Q, inst10_Q, inst8_Q};
+endmodule
+

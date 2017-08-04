@@ -1,4 +1,4 @@
-logisim2magma
+logi
 =============
 
-Convert logisim .circ file to a magma python program
+Convert logisim .circ files to magma programs
